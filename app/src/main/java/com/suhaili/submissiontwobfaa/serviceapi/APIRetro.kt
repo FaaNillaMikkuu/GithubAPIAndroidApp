@@ -8,27 +8,27 @@ import retrofit2.http.*
 
 interface APIRetro {
     @GET("users")
-    @Headers("Authorization: token dd43785ed7eb42bc75973f3a8a837e3391122da9")
+    @Headers("Authorization: token 39aeb15debbadccadf1a8132ef04997cc4b6b724")
     fun getAllData(): Call<ArrayList<LoginModel>>
 
 
     @GET("users/{login}")
-    @Headers("Authorization: token dd43785ed7eb42bc75973f3a8a837e3391122da9")
+    @Headers("Authorization: token 39aeb15debbadccadf1a8132ef04997cc4b6b724")
     fun getUserData(@Path("login") login: String): Call<GitModel>
 
 
     @GET("users/{login}/following")
-    @Headers("Authorization: token dd43785ed7eb42bc75973f3a8a837e3391122da9")
+    @Headers("Authorization: token 39aeb15debbadccadf1a8132ef04997cc4b6b724")
     fun getFollowing(@Path("login") login: String): Call<ArrayList<LoginModel>>
 
 
     @GET("users/{login}/followers")
-    @Headers("Authorization: token dd43785ed7eb42bc75973f3a8a837e3391122da9")
+    @Headers("Authorization: token 39aeb15debbadccadf1a8132ef04997cc4b6b724")
     fun getFollower(@Path("login") login: String): Call<ArrayList<LoginModel>>
 
 
     @GET("search/users")
-    @Headers("Authorization: token dd43785ed7eb42bc75973f3a8a837e3391122da9")
+    @Headers("Authorization: token 39aeb15debbadccadf1a8132ef04997cc4b6b724")
     fun getFindPeople(@Query("q") q: String): Call<FindModel>
 
 }
