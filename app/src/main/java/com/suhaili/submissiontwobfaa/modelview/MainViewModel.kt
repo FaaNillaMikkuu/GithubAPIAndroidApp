@@ -1,237 +1,244 @@
 package com.suhaili.submissiontwobfaa.modelview
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.suhaili.submissiontwobfaa.R
+import com.suhaili.submissiontwobfaa.model.FindModel
 import com.suhaili.submissiontwobfaa.model.GitModel
-import com.loopj.android.http.*
-import cz.msebera.android.httpclient.Header
-import org.json.JSONArray
-import org.json.JSONObject
+import com.suhaili.submissiontwobfaa.model.LoginModel
+import com.suhaili.submissiontwobfaa.serviceapi.APIRetro
+import com.suhaili.submissiontwobfaa.view.MainActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainViewModel : ViewModel() {
+
+    companion object {
+        private val URL = "https://api.github.com/"
+    }
 
     private val livedata = MutableLiveData<ArrayList<GitModel>>()
     private val temp = ArrayList<GitModel>()
 
     fun getLiveData(): LiveData<ArrayList<GitModel>> = livedata
 
-    fun getAllData() {
-        val client = AsyncHttpClient()
-        val URL = "https://api.github.com/users"
-        val getData = ArrayList<GitModel>()
-        client.addHeader("Authorization", "token d5ec42e2204a263f595473524ae942b906ccbfb8")
-        client.addHeader("User-Agent", "GET_API_KEY")
-        client.get(URL, object : AsyncHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?
+    fun getAllData(app: Context) {
+        temp.clear()
+        val retro = Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        val api = retro.create(APIRetro::class.java)
+        val getAllData = api.getAllData()
+        getAllData.enqueue(object : Callback<ArrayList<LoginModel>> {
+            override fun onResponse(
+                    call: Call<ArrayList<LoginModel>>,
+                    response: Response<ArrayList<LoginModel>>
             ) {
-                Log.d("Status", "Success Connect API!")
-                temp.clear()
-                val result = String(responseBody!!)
-                val jsonArr = JSONArray(result)
+                Log.d("Status", "API Connect Successfully")
+                Toast.makeText(app, "API Connect Successfully", Toast.LENGTH_SHORT).show()
                 try {
-                    for (i in 0 until jsonArr.length()) {
-                        val obj = jsonArr.getJSONObject(i)
-                        getUserLogin(obj.getString("login").toString())
+                    val result = response.body()
+                    Log.d("Status", "$result")
+                    if (result != null) {
+                        for (i in 0 until result.size) {
+                            val jsonbj = result.get(i).username
+                            getUserLogin(jsonbj!!, app)
+                        }
                     }
-
-                    livedata.postValue(getData)
-                    Log.d("Status", "Get Data Success!")
-
                 } catch (e: Exception) {
-                    Log.d("Status", "Get Data Failure!")
-                    e.printStackTrace()
+                    Log.d("Status", "Get All Data Fail!")
+                    Log.d("status", e.message.toString())
+                    Toast.makeText(app, "${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?,
-                error: Throwable?
-            ) {
-                Log.d("Status", "Failure Connect API!")
-            }
-
-        })
-
-    }
-
-    private fun getUserLogin(login: String) {
-        val client = AsyncHttpClient()
-        val URL = "https://api.github.com/users/$login"
-        client.addHeader("Authorization", "token d5ec42e2204a263f595473524ae942b906ccbfb8")
-        client.addHeader("User-Agent", "GET_API_KEY")
-        client.get(URL, object : AsyncHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?
-            ) {
-                Log.d("Status", "Success Connect!")
-                var stat = false
-                var gitdata = GitModel()
-                val hasil = String(responseBody!!)
-                val objRes = JSONObject(hasil)
-                gitdata.avatar = objRes.getString("avatar_url")
-                gitdata.username = objRes.getString("login")
-                gitdata.name = objRes.getString("name")
-                gitdata.repo = objRes.getString("public_repos")
-                gitdata.company = objRes.getString("company")
-                gitdata.location = objRes.getString("location")
-                gitdata.follower = objRes.getString("followers")
-                gitdata.following = objRes.getString("following")
-                Log.d("Status", "Get Data Success!")
-
-                for (i in 0 until temp.size) {
-                    if (temp.get(i).username == gitdata.username) {
-                        stat = true
-                        break
-                    }
-                }
-
-                if (stat) {
-
-                } else {
-                    temp.add(gitdata)
-                    livedata.postValue(temp)
-                }
-
-            }
-
-            override fun onFailure(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?,
-                error: Throwable?
-            ) {
-                Log.d("Status", error?.message.toString())
-                Log.d("Status", "Get Data Failure!")
-            }
-
-        })
-
-    }
-
-    fun findPeople(finding: String) {
-        val client = AsyncHttpClient()
-        val URL = "https://api.github.com/search/users?q=$finding"
-        client.addHeader("Authorization", "token d5ec42e2204a263f595473524ae942b906ccbfb8")
-        client.addHeader("User-Agent", "GET_API_KEY")
-        client.get(URL, object : AsyncHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?
-            ) {
-                try {
-                    Log.d("Status", "Success Connect API")
-                    val hasil = String(responseBody!!)
-                    val jsobj = JSONObject(hasil)
-                    val item = jsobj.getJSONArray("items")
-                    for (i in 0 until item.length()) {
-
-                        val obj = item.getJSONObject(i)
-                        getUserLogin(obj.getString("login"))
-                        temp.clear()
-
-
-                    }
-                    Log.d("Status", "Get Data Success!")
-                } catch (e: Exception) {
-                    Log.d("Status", "Get Data Failure !")
-                }
-            }
-
-            override fun onFailure(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?,
-                error: Throwable?
-            ) {
-                Log.d("Status", "Failure Connect API!")
+            override fun onFailure(call: Call<ArrayList<LoginModel>>, t: Throwable) {
+                Log.d("Status", "API Connect Fail")
+                Log.d("Status", t.message.toString())
+                Toast.makeText(app, "${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
 
+
     }
 
-    fun getFollow(username: String) {
-        val client = AsyncHttpClient()
-        val URL = "https://api.github.com/users/$username/followers"
-        client.addHeader("Authorization", "token d5ec42e2204a263f595473524ae942b906ccbfb8")
-        client.addHeader("User-Agent", "GET_API_KEY")
-        client.get(URL, object : AsyncHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?
-            ) {
-                Log.d("Status", "Success Connect API!")
-                try {
-                    temp.clear()
-                    val result = String(responseBody!!)
-                    val jsonarr = JSONArray(result)
-                    for (i in 0 until jsonarr.length()) {
-                        val obj = jsonarr.getJSONObject(i)
-                        getUserLogin(obj.getString("login").toString())
+    private fun getUserLogin(login: String, app: Context) {
+        val retro = Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
+        val api = retro.create(APIRetro::class.java)
+        val data = api.getUserData(login)
+        data.enqueue(object : Callback<GitModel> {
+            override fun onResponse(call: Call<GitModel>, response: Response<GitModel>) {
+                Log.d("Status", "API Connect Successfully")
+                try {
+                    var stat = false
+                    val result = response.body()
+                    if (result == null) {
+                        Toast.makeText(app, R.string.peringatan.toString(), Toast.LENGTH_SHORT).show()
+                    } else {
+                        val dataGit = GitModel(
+                                result?.name.toString(),
+                                result?.avatar.toString(),
+                                result?.company.toString(),
+                                result?.follower.toString(),
+                                result?.following.toString(),
+                                result?.location.toString(),
+                                result?.repo.toString(),
+                                result?.username.toString())
+                        for (i in 0 until temp.size) {
+                            if (temp.get(i).username == dataGit.username) {
+                                stat = true
+                                break
+                            }
+                        }
+                        if (stat == true) {
+
+                        } else {
+                            temp.add(dataGit)
+                            livedata.postValue(temp)
+                        }
                     }
-                    Log.d("Status", "Get Data Success!")
+
+                    Log.d("status", "Successful Save Data")
 
                 } catch (e: Exception) {
-                    Log.d("Status", "Get Data Failure!")
+                    Log.d("Status", "Fail to Save Data")
+                    Log.d("Status", e.toString())
+                    Toast.makeText(app, "${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?,
-                error: Throwable?
+            override fun onFailure(call: Call<GitModel>, t: Throwable) {
+                Log.d("Status", "API Connect Fail!")
+                Log.d("Status", t.message.toString())
+                Toast.makeText(app, "${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+    }
+
+    fun findPeople(finding: String, app: Context) {
+        temp.clear()
+        val retro = Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        val api = retro.create(APIRetro::class.java)
+        val data = api.getFindPeople(finding)
+        data.enqueue(object : Callback<FindModel> {
+            override fun onResponse(
+                    call: Call<FindModel>,
+                    response: Response<FindModel>
             ) {
-                Log.d("Status", "Failure Connect API!")
+                Log.d("Status", "API Connect Successfully")
+                try {
+                    val result = response.body()
+                    Log.d("Status", "$response")
+                    if (result != null) {
+                        for (i in 0 until result.items.size) {
+                            val data = result.items.get(i).username
+                            getUserLogin(data!!, app)
+                        }
+                    }
+                    Log.d("Status", "Data Succesfully Loaded!")
+
+
+                } catch (e: Exception) {
+                    Log.d("Status", "Data Fail Loaded!")
+                    Log.d("Status", e.message.toString())
+                    Toast.makeText(app, "${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<FindModel>, t: Throwable) {
+                Log.d("Status", "API Connect Failure")
+                Toast.makeText(app, "${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    fun getFollowing(username: String) {
-        val client = AsyncHttpClient()
-        val URL = "https://api.github.com/users/$username/following"
-        client.addHeader("Authorization", "token d5ec42e2204a263f595473524ae942b906ccbfb8")
-        client.addHeader("User-Agent", "GET_API_KEY")
-        client.get(URL, object : AsyncHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?
-            ) {
-                Log.d("Status", "Success Connect API!")
+    fun getFollow(username: String, app: Context) {
+        temp.clear()
+        val retro = Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        val api = retro.create(APIRetro::class.java)
+        val data = api.getFollower(username)
+        data.enqueue(object : Callback<ArrayList<LoginModel>> {
+            override fun onResponse(call: Call<ArrayList<LoginModel>>, response: Response<ArrayList<LoginModel>>) {
+                Log.d("Status", "API Connect Succesfully")
                 try {
-                    temp.clear()
-                    val result = String(responseBody!!)
-                    val jsonarr = JSONArray(result)
-                    for (i in 0 until jsonarr.length()) {
-                        val obj = jsonarr.getJSONObject(i)
-                        getUserLogin(obj.getString("login").toString())
+                    val result = response.body()
+                    if (result != null) {
+                        for (i in 0 until result.size) {
+                            val data = result.get(i).username
+                            getUserLogin(data!!, app)
+                        }
                     }
-                    Log.d("Status", "Get Data Success!")
+                    Log.d("Status", "Data Load Succesfully")
                 } catch (e: Exception) {
-                    Log.d("Status", "Get Data Failure!")
+                    Log.d("Status", "Data not Load Succesfully")
+                    Log.d("Status", "${e.message}")
+                    Toast.makeText(app, "${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?,
-                error: Throwable?
-            ) {
-                Log.d("Status", "Failure Connect API!")
+            override fun onFailure(call: Call<ArrayList<LoginModel>>, t: Throwable) {
+                Log.d("Status", "API Connect Fail")
+                Log.d("Status", "${t.message}")
+            }
+        })
+    }
+
+    fun getFollowing(username: String, app: Context) {
+        temp.clear()
+        val retro = Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        val api = retro.create(APIRetro::class.java)
+        val data = api.getFollowing(username)
+        data.enqueue(object : Callback<ArrayList<LoginModel>> {
+            override fun onResponse(call: Call<ArrayList<LoginModel>>, response: Response<ArrayList<LoginModel>>) {
+                Log.d("Status", "API Connect Succesfully")
+                try {
+                    val result = response.body()
+                    if (result != null) {
+                        for (i in 0 until result.size) {
+                            val data = result.get(i).username
+                            getUserLogin(data!!, app)
+                        }
+                    }
+                    Log.d("Status", "Data Load Succesfully")
+                } catch (e: Exception) {
+                    Log.d("Status", "Data not Load Succesfully")
+                    Log.d("Status", "${e.message}")
+                    Toast.makeText(app, "${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<LoginModel>>, t: Throwable) {
+                Log.d("Status", "API Connect Fail")
+                Log.d("Status", "${t.message}")
+                Toast.makeText(app, "${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -36,8 +36,8 @@ class ListFrag : Fragment() {
     lateinit var MainView: MainViewModel
     lateinit var RecAdapter: GitHubAdapter
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         _bind = FragmentListBinding.inflate(layoutInflater, container, false)
         return bind?.root
@@ -46,8 +46,8 @@ class ListFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         MainView = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
+                this,
+                ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
         RecAdapter = GitHubAdapter()
         RecAdapter.notifyDataSetChanged()
@@ -57,18 +57,18 @@ class ListFrag : Fragment() {
         val Following = arguments?.getString(FOLLOWING)
         LoadingProgrees(true)
         if (angka == 1) {
-            if (username != null && Follower != "0" ) {
-                MainView.getFollowing(username)
+            if (username != null && Following != "0") {
+                MainView.getFollowing(username, activity!!.applicationContext)
                 observeData()
-            }else{
+            } else {
                 bind.progressCircularmain.visibility = View.INVISIBLE
             }
 
         } else if (angka == 2) {
-            if (username != null && Following != "0") {
-                MainView.getFollow(username)
+            if (username != null && Follower != "0") {
+                MainView.getFollow(username, activity!!.applicationContext)
                 observeData()
-            }else{
+            } else {
                 bind.progressCircularmain.visibility = View.INVISIBLE
             }
 
@@ -118,15 +118,15 @@ class ListFrag : Fragment() {
 
 
         @JvmStatic
-        fun newInstance(index: Int, user: String,val1 : String,val2 : String) =
-            ListFrag().apply {
-                arguments = Bundle().apply {
-                    putInt(PARAMS_SECTION, index)
-                    putString(USER, user)
-                    putString(FOLLOWER, val1)
-                    putString(FOLLOWING, val2)
+        fun newInstance(index: Int, user: String, val1: String, val2: String) =
+                ListFrag().apply {
+                    arguments = Bundle().apply {
+                        putInt(PARAMS_SECTION, index)
+                        putString(USER, user)
+                        putString(FOLLOWER, val1)
+                        putString(FOLLOWING, val2)
+                    }
                 }
-            }
     }
 
 

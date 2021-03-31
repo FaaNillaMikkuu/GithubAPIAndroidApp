@@ -18,9 +18,9 @@ class AboutActivity : AppCompatActivity() {
         supportActionBar?.title = resources.getString(R.string.about)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         Glide.with(this)
-            .load(R.drawable.picprofile)
-            .apply(RequestOptions().override(150, 150))
-            .into(viewBind.profilepic)
+                .load(R.drawable.picprofile)
+                .apply(RequestOptions().override(150, 150))
+                .into(viewBind.profilepic)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -20,4 +20,5 @@
     <string name="tagname">Name</string>
     <string name="tageamail">Email</string>
     <string name="tagMotto">Motto</string>
+    <string name="peringatan">Not Found</string>
 </resources>

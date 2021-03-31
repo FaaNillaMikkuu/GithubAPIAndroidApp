@@ -19,8 +19,8 @@ class DetailActivity : AppCompatActivity() {
     companion object {
         @StyleRes
         private val JudulTab = intArrayOf(
-            R.string.follow,
-            R.string.follower
+                R.string.follow,
+                R.string.follower
         )
     }
 
@@ -38,10 +38,10 @@ class DetailActivity : AppCompatActivity() {
         detail.append(dataintent.username)
         supportActionBar?.title = detail.toString()
         Glide.with(this)
-            .load(dataintent.avatar)
-            .placeholder(R.drawable.ic_baseline_image_24)
-            .error(R.drawable.ic_baseline_error_24)
-            .into(bind.pic)
+                .load(dataintent.avatar)
+                .placeholder(R.drawable.ic_baseline_image_24)
+                .error(R.drawable.ic_baseline_error_24)
+                .into(bind.pic)
 
         bind.username.text = dataintent.username
         bind.name.text = dataintent.name
@@ -52,7 +52,8 @@ class DetailActivity : AppCompatActivity() {
         bind.ikutin.text = dataintent.following
         viewAdap = bind.viewPagernya
 
-        val tabadapter = TabAdapter(this, dataintent.username,dataintent.follower,dataintent.following)
+
+        val tabadapter = TabAdapter(this, dataintent.username!!, dataintent.follower!!, dataintent.following!!)
         viewAdap.adapter = tabadapter
         val tabTittle: TabLayout = bind.tabLayout
         TabLayoutMediator(tabTittle, viewAdap) { tab, position ->
@@ -62,9 +63,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
-                startActivity(Intent(this,MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }

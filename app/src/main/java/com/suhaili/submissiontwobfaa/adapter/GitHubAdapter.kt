@@ -31,10 +31,10 @@ class GitHubAdapter : RecyclerView.Adapter<GitHubAdapter.TargetItem>() {
                 bind.username.text = model.username
 
                 Glide.with(itemView.context)
-                    .load(model.avatar)
-                    .placeholder(R.drawable.ic_baseline_image_24)
-                    .error(R.drawable.ic_baseline_error_24)
-                    .into(bind.picAvatar)
+                        .load(model.avatar)
+                        .placeholder(R.drawable.ic_baseline_image_24)
+                        .error(R.drawable.ic_baseline_error_24)
+                        .into(bind.picAvatar)
 
 
 
@@ -49,11 +49,11 @@ class GitHubAdapter : RecyclerView.Adapter<GitHubAdapter.TargetItem>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TargetItem {
         return TargetItem(
-            ListItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+                ListItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                )
         )
     }
 

@@ -5,6 +5,7 @@ import androidx.appcompat.widget.SearchView
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
@@ -18,9 +19,7 @@ import com.suhaili.submissiontwobfaa.model.GitModel
 import com.suhaili.submissiontwobfaa.modelview.MainViewModel
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        val LEMPAR = "data"
-    }
+
 
     lateinit var bind: ActivityMainBinding
     lateinit var MainView: MainViewModel
@@ -30,30 +29,29 @@ class MainActivity : AppCompatActivity() {
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.root)
         MainView = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
+                this,
+                ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
         RecAdapter = GitHubAdapter()
         RecAdapter.notifyDataSetChanged()
         bind.RCData.layoutManager = LinearLayoutManager(this)
         bind.RCData.adapter = RecAdapter
-
+        MainView.getAllData(this)
         LoadingProgrees(true)
-        MainView.getAllData()
         observeData()
-
         bind.searchUsername.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(!newText.isNullOrEmpty()){
+                if (newText != "") {
+                    datafound(newText)
                     LoadingProgrees(true)
-                    datafound(newText!!)
-                }else{
-                    LoadingProgrees(true)
+                    Handler().postDelayed({ LoadingProgrees(false) }, 5000)
+                } else {
                     showAllData()
+                    LoadingProgrees(true)
                 }
                 return false
             }
@@ -79,14 +77,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAllData() {
-        MainView.getAllData()
-        observeData()
-
+        MainView.getAllData(this)
     }
 
     private fun datafound(c: String?) {
-        MainView.findPeople(c!!)
-        observeData()
+        MainView.findPeople(c!!, this)
     }
 
 
@@ -115,5 +110,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        val LEMPAR = "data"
+    }
 
 }

@@ -20,4 +20,6 @@
     <string name="tagname">Nama</string>
     <string name="tageamail">Email</string>
     <string name="tagMotto">Motto</string>
+    <string name="peringatan">Tidak Di Temukan</string>
+
 </resources>
