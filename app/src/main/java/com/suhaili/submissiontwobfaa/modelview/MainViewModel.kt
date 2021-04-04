@@ -21,17 +21,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainViewModel : ViewModel() {
 
-    companion object {
+
         private val URL = "https://api.github.com/"
-    }
+
 
     private val livedata = MutableLiveData<ArrayList<GitModel>>()
-    private val temp = ArrayList<GitModel>()
+    private val temp : ArrayList<GitModel> = arrayListOf()
 
     fun getLiveData(): LiveData<ArrayList<GitModel>> = livedata
 
     fun getAllData(app: Context) {
-        temp.clear()
         val retro = Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -48,13 +47,15 @@ class MainViewModel : ViewModel() {
                 Toast.makeText(app, "API Connect Successfully", Toast.LENGTH_SHORT).show()
                 try {
                     val result = response.body()
-                    Log.d("Status", "$result")
                     if (result != null) {
+                        temp.clear()
                         for (i in 0 until result.size) {
                             val jsonbj = result.get(i).username
                             getUserLogin(jsonbj!!, app)
                         }
                     }
+                    Log.d("Status", "Get All Data Succesfully Loaded!")
+                    Toast.makeText(app, "Get All Data Succesfully Loaded!", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     Log.d("Status", "Get All Data Fail!")
                     Log.d("status", e.message.toString())
@@ -90,14 +91,14 @@ class MainViewModel : ViewModel() {
                         Toast.makeText(app, R.string.peringatan.toString(), Toast.LENGTH_SHORT).show()
                     } else {
                         val dataGit = GitModel(
-                                result?.name.toString(),
-                                result?.avatar.toString(),
-                                result?.company.toString(),
-                                result?.follower.toString(),
-                                result?.following.toString(),
-                                result?.location.toString(),
-                                result?.repo.toString(),
-                                result?.username.toString())
+                                result.name.toString(),
+                                result.avatar.toString(),
+                                result.company.toString(),
+                                result.follower.toString(),
+                                result.following.toString(),
+                                result.location.toString(),
+                                result.repo.toString(),
+                                result.username.toString())
                         for (i in 0 until temp.size) {
                             if (temp.get(i).username == dataGit.username) {
                                 stat = true
@@ -113,7 +114,6 @@ class MainViewModel : ViewModel() {
                     }
 
                     Log.d("status", "Successful Save Data")
-
                 } catch (e: Exception) {
                     Log.d("Status", "Fail to Save Data")
                     Log.d("Status", e.toString())
@@ -132,7 +132,6 @@ class MainViewModel : ViewModel() {
     }
 
     fun findPeople(finding: String, app: Context) {
-        temp.clear()
         val retro = Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -145,19 +144,17 @@ class MainViewModel : ViewModel() {
                     call: Call<FindModel>,
                     response: Response<FindModel>
             ) {
-                Log.d("Status", "API Connect Successfully")
                 try {
+                    Log.d("Status", "API Connect Succesfully")
+
                     val result = response.body()
-                    Log.d("Status", "$response")
                     if (result != null) {
+                        temp.clear()
                         for (i in 0 until result.items.size) {
                             val data = result.items.get(i).username
                             getUserLogin(data!!, app)
                         }
                     }
-                    Log.d("Status", "Data Succesfully Loaded!")
-
-
                 } catch (e: Exception) {
                     Log.d("Status", "Data Fail Loaded!")
                     Log.d("Status", e.message.toString())
@@ -172,75 +169,5 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun getFollow(username: String, app: Context) {
-        temp.clear()
-        val retro = Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-        val api = retro.create(APIRetro::class.java)
-        val data = api.getFollower(username)
-        data.enqueue(object : Callback<ArrayList<LoginModel>> {
-            override fun onResponse(call: Call<ArrayList<LoginModel>>, response: Response<ArrayList<LoginModel>>) {
-                Log.d("Status", "API Connect Succesfully")
-                try {
-                    val result = response.body()
-                    if (result != null) {
-                        for (i in 0 until result.size) {
-                            val data = result.get(i).username
-                            getUserLogin(data!!, app)
-                        }
-                    }
-                    Log.d("Status", "Data Load Succesfully")
-                } catch (e: Exception) {
-                    Log.d("Status", "Data not Load Succesfully")
-                    Log.d("Status", "${e.message}")
-                    Toast.makeText(app, "${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ArrayList<LoginModel>>, t: Throwable) {
-                Log.d("Status", "API Connect Fail")
-                Log.d("Status", "${t.message}")
-            }
-        })
-    }
-
-    fun getFollowing(username: String, app: Context) {
-        temp.clear()
-        val retro = Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-        val api = retro.create(APIRetro::class.java)
-        val data = api.getFollowing(username)
-        data.enqueue(object : Callback<ArrayList<LoginModel>> {
-            override fun onResponse(call: Call<ArrayList<LoginModel>>, response: Response<ArrayList<LoginModel>>) {
-                Log.d("Status", "API Connect Succesfully")
-                try {
-                    val result = response.body()
-                    if (result != null) {
-                        for (i in 0 until result.size) {
-                            val data = result.get(i).username
-                            getUserLogin(data!!, app)
-                        }
-                    }
-                    Log.d("Status", "Data Load Succesfully")
-                } catch (e: Exception) {
-                    Log.d("Status", "Data not Load Succesfully")
-                    Log.d("Status", "${e.message}")
-                    Toast.makeText(app, "${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ArrayList<LoginModel>>, t: Throwable) {
-                Log.d("Status", "API Connect Fail")
-                Log.d("Status", "${t.message}")
-                Toast.makeText(app, "${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
 
 }

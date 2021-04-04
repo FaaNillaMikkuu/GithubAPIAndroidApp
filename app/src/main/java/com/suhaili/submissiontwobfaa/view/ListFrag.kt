@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.suhaili.submissiontwobfaa.adapter.GitHubAdapter
 import com.suhaili.submissiontwobfaa.databinding.FragmentListBinding
 import com.suhaili.submissiontwobfaa.model.GitModel
+import com.suhaili.submissiontwobfaa.modelview.MainViewFragment
 import com.suhaili.submissiontwobfaa.modelview.MainViewModel
 
 
@@ -33,8 +34,8 @@ class ListFrag : Fragment() {
         }
     }
 
-    lateinit var MainView: MainViewModel
-    lateinit var RecAdapter: GitHubAdapter
+   private lateinit var MainView: MainViewFragment
+   private lateinit var RecAdapter: GitHubAdapter
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -45,18 +46,15 @@ class ListFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MainView = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-        ).get(MainViewModel::class.java)
+        MainView = ViewModelProvider(this,ViewModelProvider.NewInstanceFactory()).get(MainViewFragment::class.java)
         RecAdapter = GitHubAdapter()
         RecAdapter.notifyDataSetChanged()
-        val angka = arguments?.getInt(PARAMS_SECTION)
+        val number = arguments?.getInt(PARAMS_SECTION)
         val username = arguments?.getString(USER)
         val Follower = arguments?.getString(FOLLOWER)
         val Following = arguments?.getString(FOLLOWING)
         LoadingProgrees(true)
-        if (angka == 1) {
+        if (number == 1) {
             if (username != null && Following != "0") {
                 MainView.getFollowing(username, activity!!.applicationContext)
                 observeData()
@@ -64,7 +62,7 @@ class ListFrag : Fragment() {
                 bind.progressCircularmain.visibility = View.INVISIBLE
             }
 
-        } else if (angka == 2) {
+        } else if (number == 2) {
             if (username != null && Follower != "0") {
                 MainView.getFollow(username, activity!!.applicationContext)
                 observeData()
@@ -88,7 +86,7 @@ class ListFrag : Fragment() {
     }
 
     private fun observeData() {
-        MainView.getLiveData().observe(viewLifecycleOwner, { items ->
+        MainView.getLivedata().observe(viewLifecycleOwner, { items ->
             if (items != null) {
                 RecAdapter.setData(items)
                 LoadingProgrees(false)

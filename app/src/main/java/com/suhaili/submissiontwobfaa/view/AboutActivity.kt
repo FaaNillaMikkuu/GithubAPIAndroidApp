@@ -10,7 +10,7 @@ import com.suhaili.submissiontwobfaa.R
 import com.suhaili.submissiontwobfaa.databinding.ActivityAboutBinding
 
 class AboutActivity : AppCompatActivity() {
-    lateinit var viewBind: ActivityAboutBinding
+    private lateinit var viewBind: ActivityAboutBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBind = ActivityAboutBinding.inflate(layoutInflater)

@@ -24,8 +24,8 @@ class DetailActivity : AppCompatActivity() {
         )
     }
 
-    lateinit var viewAdap: ViewPager2
-    lateinit var bind: ActivityDetailBinding
+    private lateinit var viewAdap: ViewPager2
+    private lateinit var bind: ActivityDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityDetailBinding.inflate(layoutInflater)

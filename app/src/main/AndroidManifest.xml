@@ -20,7 +20,7 @@
                 android:value=".view.MainActivity"/>
         </activity>
         <activity android:name=".view.MainActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
