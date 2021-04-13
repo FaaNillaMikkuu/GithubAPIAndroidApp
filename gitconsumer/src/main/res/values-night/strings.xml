@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Pencarian Github</string>
+    <string name="hello_blank_fragment">Halo Fragment Kosong</string>
+    <string name="follow">Mengikuti</string>
+    <string name="follower">Pengikut</string>
+    <string name="repo">Repositori</string>
+    <string name="Location">Lokasi</string>
+    <string name="company">Perusahaan</string>
+    <string name="name">Suhaili Faruq</string>
+    <string name="username">Nama Pengguna</string>
+    <string name="hint">Mencari Nama Pengguna</string>
+    <string name="detail">Detail</string>
+    <string name="about">Tentang Saya</string>
+    <string name="languange">Ubah Bahasa</string>
+    <string name="setting">Pengaturan</string>
+    <string name="dev">Suhaili Faruq</string>
+    <string name="email">suhaili.faruq01@gmail.com</string>
+    <string name="motto">Saya Ingin Membuat Kesalahpahaman menjadi kenyataan-NamDooSan</string>
+    <string name="tagname">Nama</string>
+    <string name="tageamail">Email</string>
+    <string name="tagMotto">Motto</string>
+</resources>

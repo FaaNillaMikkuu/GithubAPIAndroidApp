@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#01579b</color>
+    <color name="secondaryColor">#58a5ef</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+    <color name="loc">#ff1e56</color>
+    <color name="comp">#ffac41</color>
+</resources>
