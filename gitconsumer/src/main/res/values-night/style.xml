@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ListNama">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAlignment">textStart</item>
+    </style>
+
+    <style name="ListUserNama" parent="ListNama">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DetailNama" parent="ListNama">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="DetailuserNama" parent="DetailNama">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DetailJumlah" parent="DetailNama">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="DetailLok" parent="DetailJumlah">
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+    <style name="taglok" parent="DetailJumlah">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+
+    <style name="aboutname">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="aboutemail">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="aboutmotto">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="tagabout">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
+</resources>

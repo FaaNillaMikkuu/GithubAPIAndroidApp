@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">GithubAppConsumer</string>
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+    <string name="follow">Following</string>
+    <string name="follower">Follower</string>
+    <string name="repo">Repository</string>
+    <string name="Location">Location</string>
+    <string name="company">Company</string>
+    <string name="name">Suhaili Faruq</string>
+    <string name="username">Username</string>
+    <string name="hint">Find Username</string>
+    <string name="detail">Detail</string>
+    <string name="about">About Me</string>
+    <string name="languange">Change Languange</string>
+    <string name="setting">Setting</string>
+    <string name="dev">Suhaili Faruq</string>
+    <string name="email">suhaili.faruq01@gmail.com</string>
+    <string name="motto">I Want Make Missunderstanding become true-NamDooSan</string>
+    <string name="tagname">Name</string>
+    <string name="tageamail">Email</string>
+    <string name="tagMotto">Motto</string>
+    <string name="peringatan">Not Found</string>
+    <string name="favorite">Favorite User</string>
+    <string name="settings">Settings</string>
+    <string name="reminderTime">Reminder notification every 09.00 WIB</string>
+    <string name="notiftitle">GitHubApp Reminder</string>
+    <string name="notifmessage">Check Again, There\'s a new Github User!</string>
+    <string name="statOn">On</string>
+    <string name="statOff">Off</string>
+</resources>

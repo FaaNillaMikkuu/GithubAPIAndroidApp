@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Pencarian Github</string>
+    <string name="app_name">GithubApp</string>
     <string name="hello_blank_fragment">Halo Fragment Kosong</string>
     <string name="follow">Mengikuti</string>
     <string name="follower">Pengikut</string>
@@ -21,5 +21,11 @@
     <string name="tageamail">Email</string>
     <string name="tagMotto">Motto</string>
     <string name="peringatan">Tidak Di Temukan</string>
-
+    <string name="favorite">Pengguna Favorit</string>
+    <string name="settings">Pengaturan</string>
+    <string name="reminderTime">Notifikasi Pengingat setiap 09.00 WIB</string>
+    <string name="notiftitle">Pengingat GitHubApp</string>
+    <string name="notifmessage">Cek Lagi Yuk,Ada Pengguna Github baru Nih !</string>
+    <string name="statOn">Aktif</string>
+    <string name="statOff">Mati</string>
 </resources>

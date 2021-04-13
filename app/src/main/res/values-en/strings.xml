@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Github Search</string>
+    <string name="app_name">GithubApp</string>
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
     <string name="follow">Following</string>
     <string name="follower">Follower</string>
@@ -21,4 +21,11 @@
     <string name="tageamail">Email</string>
     <string name="tagMotto">Motto</string>
     <string name="peringatan">Not Found</string>
+    <string name="favorite">Favorite User</string>
+    <string name="settings">Settings</string>
+    <string name="reminderTime">Reminder notification every 09.00 WIB</string>
+    <string name="notiftitle">GitHubApp Reminder</string>
+    <string name="notifmessage">Check Again, There\'s a new Github User!</string>
+    <string name="statOn">On</string>
+    <string name="statOff">Off</string>
 </resources>
