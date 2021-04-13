@@ -1,4 +1,10 @@
-# GithubAPIAndroidAppWithRetrofit2
-Aplication Github Search from API with Retrofit 
+# GithubApp
 
-Change your Key API Github on Gradle.properties
+(For Learning About Make Android APP)
+-SQLite
+-SharedPreferences Screen
+-Notification
+-AlarmManager
+-Content Provider
+
+Change your Key API Github on Gradle.properties if you want try this application
