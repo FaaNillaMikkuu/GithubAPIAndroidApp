@@ -1,23 +1,18 @@
 package com.suhaili.GitHubApp.view
 
 import android.content.Intent
-import android.database.ContentObserver
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.suhaili.GitHubApp.R
 import com.suhaili.GitHubApp.adapter.FavoritAdapter
 import com.suhaili.GitHubApp.customview.ClickCallBack
 import com.suhaili.GitHubApp.databinding.ActivityFavoritUserBinding
 import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.CONTENT_URI
-import com.suhaili.GitHubApp.db.FavHelper
 import com.suhaili.GitHubApp.model.FavoritModel
 import com.suhaili.GitHubApp.modelview.MappingHelper
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +32,6 @@ class FavoritUserActivity : AppCompatActivity() {
         bind.listFav.layoutManager = LinearLayoutManager(this)
         model = FavoritAdapter()
         bind.listFav.adapter = model
-
-        loadProgress(true)
         getAllDatanya()
         model.setClickBack(object : ClickCallBack{
             override fun ItemClicked(fav: FavoritModel) {
@@ -66,7 +59,7 @@ class FavoritUserActivity : AppCompatActivity() {
 
     fun getAllDatanya() {
         GlobalScope.launch(Dispatchers.Main) {
-
+            loadProgress(true)
             val data = async(Dispatchers.IO) {
                 val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
                 Log.d("Lookme","$cursor")

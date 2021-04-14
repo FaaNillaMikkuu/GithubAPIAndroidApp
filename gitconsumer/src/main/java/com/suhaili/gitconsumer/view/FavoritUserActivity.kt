@@ -61,7 +61,7 @@ class FavoritUserActivity : AppCompatActivity() {
 
     fun getAllDatanya() {
         GlobalScope.launch(Dispatchers.Main) {
-
+            loadProgress(true)
             val data = async(Dispatchers.IO) {
                 val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
                 Log.d("Lookme","$cursor")

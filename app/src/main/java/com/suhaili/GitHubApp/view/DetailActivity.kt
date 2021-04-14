@@ -2,15 +2,10 @@ package com.suhaili.GitHubApp.view
 
 import android.content.ContentValues
 import android.content.Intent
-import android.database.ContentObserver
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.annotation.StyleRes
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -28,10 +23,7 @@ import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.FOLLOWING
 import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.LOCATION
 import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.NAME
 import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.REPOSITORY
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.TABLE_NAME
 import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.USERNAME
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion._ID
-import com.suhaili.GitHubApp.db.FavHelper
 import com.suhaili.GitHubApp.model.FavoritModel
 import com.suhaili.GitHubApp.model.GitModel
 import com.suhaili.GitHubApp.modelview.MappingHelper

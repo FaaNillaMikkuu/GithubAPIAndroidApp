@@ -3,12 +3,10 @@ package com.suhaili.GitHubApp.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.MenuItem
-import android.view.View
 import com.suhaili.GitHubApp.R
 import com.suhaili.GitHubApp.databinding.ActivitySettingBinding
-import com.suhaili.GitHubApp.db.FavHelper
+
 
 class SettingActivity : AppCompatActivity() {
 

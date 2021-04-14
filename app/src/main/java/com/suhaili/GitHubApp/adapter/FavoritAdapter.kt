@@ -1,8 +1,7 @@
 package com.suhaili.GitHubApp.adapter
 
-import android.content.Intent
+
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -10,8 +9,6 @@ import com.suhaili.GitHubApp.R
 import com.suhaili.GitHubApp.customview.ClickCallBack
 import com.suhaili.GitHubApp.databinding.ListItemBinding
 import com.suhaili.GitHubApp.model.FavoritModel
-import com.suhaili.GitHubApp.view.DetailActivity
-import com.suhaili.GitHubApp.view.MainActivity
 
 class FavoritAdapter: RecyclerView.Adapter<FavoritAdapter.itemTarget>() {
     val DataFavorit = ArrayList<FavoritModel>()

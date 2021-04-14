@@ -14,16 +14,15 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.suhaili.gitconsumer.R
 import com.suhaili.gitconsumer.view.MainActivity
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 class RepeatingAlarm : BroadcastReceiver() {
 
     companion object {
-        const val ID_REPEAT = 101
-        const val CHANNEL_ID = "CHANNEL_1"
-        const val CHANNEL_NAME = "reminder_git"
-        const val CLOCK = "09:00"
+        private const val ID_REPEAT = 101
+        private  const val TIME = "HH:mm"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -32,21 +31,28 @@ class RepeatingAlarm : BroadcastReceiver() {
 
 
     fun repeatingAlarm(ctx: Context) {
-        val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(ctx, RepeatingAlarm::class.java)
-        val time = CLOCK.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val timerepeat = Calendar.getInstance()
-        timerepeat.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]))
-        timerepeat.set(Calendar.MINUTE, Integer.parseInt(time[1]))
-        timerepeat.set(Calendar.SECOND, 0)
-        val pendingIntent = PendingIntent.getBroadcast(ctx, ID_REPEAT, intent, 0)
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            timerepeat.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
-        Toast.makeText(ctx, "Reminder Is On", Toast.LENGTH_SHORT).show()
+        val clock = "09:00"
+        if (!isDateInvalid(clock, TIME)) {
+            val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(ctx, RepeatingAlarm::class.java)
+            val time = clock.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val timerepeat = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]))
+                set(Calendar.MINUTE, Integer.parseInt(time[1]))
+                set(Calendar.SECOND, 0)
+            }
+            val pending = PendingIntent.getBroadcast(ctx, ID_REPEAT, intent, 0)
+            alarmManager.setInexactRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    timerepeat.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
+                    pending
+            )
+            Toast.makeText(ctx, "Reminder Is On", Toast.LENGTH_SHORT).show()
+        } else {
+            return
+        }
     }
 
     fun cancelAlarm(ctx: Context) {
@@ -58,29 +64,41 @@ class RepeatingAlarm : BroadcastReceiver() {
         Toast.makeText(ctx, "Reminder Is Off", Toast.LENGTH_SHORT).show()
     }
 
+    private fun isDateInvalid(date: String, format: String): Boolean {
+        return try {
+            val df = SimpleDateFormat(format, Locale.getDefault())
+            df.isLenient = false
+            df.parse(date)
+            false
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            true
+        }
+    }
 
     private fun ShowNotification(ctx: Context) {
-
+        val CHANNEL_ID = "CHANNEL_1"
+        val CHANNEL_NAME = "reminder_git"
         val intent = Intent(ctx, MainActivity::class.java)
-        val pending = PendingIntent.getActivity(ctx,0,intent,0)
+        val pending = PendingIntent.getActivity(ctx, 0, intent, 0)
 
         val NotifManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val NotifBuilder = NotificationCompat.Builder(ctx, CHANNEL_ID)
-            .setContentIntent(pending)
-            .setSmallIcon(R.drawable.ic_stat_name)
-            .setLargeIcon(BitmapFactory.decodeResource(ctx.resources, R.drawable.ic_stat_name))
-            .setContentTitle(ctx.resources.getString(R.string.notiftitle))
-            .setContentText(ctx.resources.getString(R.string.notifmessage))
-            .setSubText(time())
-            .setSound(ringtone)
-            .setAutoCancel(true)
+                .setContentIntent(pending)
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setLargeIcon(BitmapFactory.decodeResource(ctx.resources, R.drawable.ic_stat_name))
+                .setContentTitle(ctx.resources.getString(R.string.notiftitle))
+                .setContentText(ctx.resources.getString(R.string.notifmessage))
+                .setSubText(time())
+                .setSound(ringtone)
+                .setAutoCancel(true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             /* Create or update. */
             val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT
             )
             channel.description = CHANNEL_NAME
             NotifBuilder.setChannelId(CHANNEL_ID)

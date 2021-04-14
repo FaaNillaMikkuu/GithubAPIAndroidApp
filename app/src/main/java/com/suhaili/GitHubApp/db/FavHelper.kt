@@ -4,19 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.AVATAR_URL
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.FOLLOWER
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.FOLLOWING
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.LOCATION
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.NAME
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.REPOSITORY
 import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.TABLE_NAME
-import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion.USERNAME
 import com.suhaili.GitHubApp.db.DbDeclare.FavCol.Companion._ID
-import com.suhaili.GitHubApp.model.FavoritModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class FavHelper(ctx: Context) {
 

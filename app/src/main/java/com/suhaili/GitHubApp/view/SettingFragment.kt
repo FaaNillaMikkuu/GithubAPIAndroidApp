@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -14,40 +13,50 @@ import com.suhaili.GitHubApp.broadcastreceiver.RepeatingAlarm
 
 
 class SettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
-    companion object{
+    companion object {
         const val LANGUANGE = "languange"
         const val ABOUT = "about"
         const val REMINDER = "reminder"
     }
-    private lateinit var Lang : Preference
-    private lateinit var About : Preference
-    private lateinit var Reminder : SwitchPreferenceCompat
-    private lateinit var AlarmService : RepeatingAlarm
+
+    private lateinit var Lang: Preference
+    private lateinit var About: Preference
+    private lateinit var Reminder: SwitchPreferenceCompat
+    private lateinit var AlarmService: RepeatingAlarm
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferencessettings)
+        AlarmService = RepeatingAlarm()
         init()
+        setSummaries()
+    }
+
+    private fun setSummaries() {
+        val sh = preferenceManager.sharedPreferences
+        Reminder.isChecked = sh.getBoolean(REMINDER, false)
     }
 
     override fun onResume() {
         super.onResume()
+        AlarmService = RepeatingAlarm()
         preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPause() {
         super.onPause()
+        AlarmService = RepeatingAlarm()
         preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
-    private fun init(){
+
+    private fun init() {
         Lang = findPreference<Preference>(LANGUANGE) as Preference
         About = findPreference<Preference>(ABOUT) as Preference
-        Reminder= findPreference<SwitchPreferenceCompat>(REMINDER) as SwitchPreferenceCompat
-        AlarmService = RepeatingAlarm()
+        Reminder = findPreference<SwitchPreferenceCompat>(REMINDER) as SwitchPreferenceCompat
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        return when(preference?.key){
-            LANGUANGE ->{
+        return when (preference?.key) {
+            LANGUANGE -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 return true
             }
@@ -55,24 +64,19 @@ class SettingFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPr
                 startActivity(Intent(activity, AboutActivity::class.java))
                 return true
             }
-            else ->  super.onPreferenceTreeClick(preferenceScreen)
+            else -> super.onPreferenceTreeClick(preferenceScreen)
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-      if(key == REMINDER){
-          if(Reminder.isChecked){
-              AlarmService.repeatingAlarm(requireActivity())
-          }else{
-              AlarmService.cancelAlarm(requireActivity())
-          }
-      }
+        if (key == REMINDER) {
+            if (Reminder.isChecked) {
+                AlarmService.repeatingAlarm(requireActivity())
+            } else {
+                AlarmService.cancelAlarm(requireActivity())
+            }
+        }
     }
-
-
-
-
-
 
 
 }
